@@ -1,0 +1,23 @@
+{
+    "all": {
+        "savedir": "",
+        "dbx_token": "",
+        "line_token": "",
+        "keywords": [
+            "高田憂希",
+            "夏川椎菜",
+            "内田雄馬",
+            "杉田智和",
+            "高橋李依",
+            "大西沙織",
+            "大橋彩香"
+        ]
+    },
+    "mysql": {
+        "hostname": "mysql-server",
+        "port": "3306",
+        "username": "radio",
+        "password": "password",
+        "database": "radio_db"
+    }
+}

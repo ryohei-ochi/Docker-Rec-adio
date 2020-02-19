@@ -1,0 +1,43 @@
+version: '3'
+services:
+  os:
+    build:
+      context: ./Ubuntu1804
+      dockerfile: Dockerfile
+    container_name: ubuntu1804
+    environment:
+      TZ: Asia/Tokyo
+    tty: true
+    volumes: 
+      - ${HOST_ROOT}\savefile:/src/Rec-adio/savefile
+      - ${HOST_ROOT}\conf:/src/Rec-adio/conf
+    depends_on:
+      - mysql
+      - phpmyadmin
+    entrypoint: /src/entrypoint.sh
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-server
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: radio_db
+      MYSQL_USER: radio
+      MYSQL_PASSWORD: password
+    command: --innodb-use-native-aio=0
+    volumes:
+      - ${HOST_ROOT}/mysql/data:/var/lib/mysql
+      - ${HOST_ROOT}/mysql/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=mysql-server
+      - PMA_USER=root
+      - PMA_PASSWORD=password
+    ports:
+      - 65080:80
