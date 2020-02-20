@@ -1,8 +1,18 @@
+> # オタク！ラジオを聞き逃すな！ってことで作るradio録音
+> ## 録音対応プラットフォーム
+> - Radiko
+> - 超A&G+
+> - 音泉
+> - 響  
+>
+> ゆるゆるさんのREADMEより引用
+
 # 対象者  
 - 声優さんのラジオ番組を自動で録音したい！
 - Windows10 64bit Homeだよ？
 - Dockerってなに？
 - Linuxってなに？
+- Pythonってなに？
 
 こんな感じのお方でも、[ゆるゆる](https://twitter.com/taittide)さんの作成された素晴らしいプログラム「[Rec-adio](https://github.com/sun-yryr/Rec-adio)」を利用できるようになります。
 
@@ -58,7 +68,13 @@ Dockerコンテナで保存したデータは、仮想化環境に保存され�
 
 1. ダウンロード
 2. 解凍
-3. C:ドライブ直下に展開
+3. C:ドライブ直下に展開  
+
+> Windows10 HomeでRec-adioのDockerコンテナを作りますよ？  
+> https://github.com/ryohei-ochi/Docker-Rec-adio  
+
+こちらから、右の方にある緑のボタン`Clone or download`の`Download ZIP`で、ZIPファイルをダウンロードして、解凍します。  
+以下のように、すべてのファイルとフォルダを展開します。
 
 ```
 C:\Docker\Rec-adio\conf
@@ -75,22 +91,23 @@ C:\Docker\Rec-adio\02_stop.bat
 > [超簡単]LINE notify を使ってみる  
 > https://qiita.com/iitenkida7/items/576a8226ba6584864d95  
 
-1. `トークン名`は任意です`録音鯖`とでもしておきましょう
+1. `トークン名`は任意です、`録音鯖`とでもしておきましょう
 2. トークルームは自分だけが受け取れれば良いので`1:1でLINE Notifyから通知を受け取る`を選択すれば良いと思います
 3. このサイトの`トークン`をメモするところまででOKです
 
 # 設定ファイルの書き換え
 `C:\Docker\Rec-adio\conf`にある`config.json`を編集します。  
-前項でLINE notifyのアクセストークンをメモした方は`line_token`にトークンをコピペしましょう。  
+前項でLINE notifyのアクセストークンをメモした方は`line_token`の`アクセストークン`にトークンをコピペしましょう。  
 `keywords`には、録音したい出演者やタイトルなどを入力します。  
 何行追加しても問題ないですが、**最後の行に`,`がつかないように気をつけてください。**  
+ちなみにデフォルトでの動作確認用として、超！A&Gの毎日21時台の番組出演者を設定してあります。
 
 ```json:config.json
 {
     "all": {
         "savedir": "",
         "dbx_token": "",
-        "line_token": "",
+        "line_token": "アクセストークン",
         "keywords": [
             "夏川椎菜",
             "大西沙織"
@@ -115,7 +132,10 @@ C:\Docker\Rec-adio\02_stop.bat
 ```
 ～省略～
 Successfully tagged rec-adio_os:latest
-Starting mysql-server ... done                                                                                          Starting phpmyadmin   ... done                                                                                          Starting ubuntu1804   ... done                                                                                          Attaching to phpmyadmin, mysql-server, ubuntu1804
+Starting mysql-server ... done
+Starting phpmyadmin   ... done
+Starting ubuntu1804   ... done
+Attaching to phpmyadmin, mysql-server, ubuntu1804
 ～省略～
 ubuntu1804    | SAVEROOT : /src/Rec-adio/savefile
 ubuntu1804    | (夏川椎菜|大西沙織)
@@ -144,7 +164,7 @@ Homeの場合、Windowsを再起動した際に、Dockerコンテナを自動的
 この2つの手順を踏む必要があります。
 
 # Dockerの完全初期化
-謎の不具合や、Dockerをアンインストールしたい場合などは、以下のコマンドを`PowerShell`で実行してください。
+謎の不具合や、コンテナをアンインストールしたい場合などは、以下のコマンドを`PowerShell`で実行してください。
 ```
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
@@ -156,5 +176,6 @@ docker rmi -f $(docker images -qa)
 ```
 
 # Proの場合
-Dockerをインストール  
-共有許可を求める通知  
+- Docker for Windowsをインストール  
+- `C:\Docker\Rec-adio\01_start_build.bat`の実行中に、共有許可を求める通知が出るので`Share　it`で許可する  
+- コンテナの自動起動もできるはず？
